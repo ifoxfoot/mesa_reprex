@@ -167,41 +167,14 @@ class Reef(mg.GeoAgent):
     """Reef Agent"""
 
     def __init__(
-        self, unique_id, model, geometry, crs, sanctuary_status
+        self, unique_id, model, geometry, crs
     ):
         super().__init__(unique_id, model, geometry, crs)
         self.type = "Reef"
-        self.sanctuary_status = sanctuary_status
-
-        #create lists for multi-step effects
-        self.tss_list = []
-        self.temp_list = []
-        self.tds_list = []
-        self.do_list = []
-        #init env values
-        self.do = random.randint(150, 340)*0.01
-        self.tss = random.randint(0, 300)
-        self.temp = random.randint(4, 33)
-        self.tds = random.randrange(10,27)
 
     def step(self):
         #get step count
         self.oyster_count = len(list(self.model.space.get_intersecting_agents(self)))
-        #get new environmental variables
-        self.do = random.randint(150, 340)*0.01
-        self.tss = random.randint(0, 300)
-        self.temp = random.randint(4, 33)
-        self.tds = random.randrange(10,27)
-        #store variables in list
-        self.tss_list.append(self.tss)
-        self.temp_list.append(self.temp)
-        self.tds_list.append(self.tds)
-        self.do_list.append(self.do)
-        #limit list length
-        self.tss_list = self.tss_list[-14:]
-        self.temp_list = self.temp_list[-7:]
-        self.tds_list = self.tds_list[-7:]
-        self.do_list = self.do_list[-7:]
 
     #get reef identity
     def __repr__(self):
