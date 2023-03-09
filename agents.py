@@ -12,7 +12,6 @@ from functions.mortality_fun import *
 #import model
 from model import *
 
-
 #set up class for shells
 class Shell(mg.GeoAgent):
 
@@ -35,18 +34,7 @@ class Oyster(mg.GeoAgent):
     def __init__(self, unique_id, model, geometry, crs, birth_reef, home_reef, age = 0):
          super().__init__(unique_id, model, geometry, crs)
          self.type = "Oyster"
-         self.age = age
-         self.birth_reef = birth_reef
-         self.home_reef = self.model.space.agents[home_reef]
-         self.energy = random.randint(0,10)
          self.shell_length_mm = random.randint(1, 300)
-         self.dry_biomass = 9.6318 * (10**-6) * (self.shell_length_mm**2.743)
-         self.wet_biomass =  (self.dry_biomass * 5.6667) + self.dry_biomass
-         self.fertility = 0
-         self.mortality_prob = 0
-
-         #init energy list
-         self.energy_list = []
 
     #define what happens at each step      
     def step(self):
