@@ -30,10 +30,7 @@ class OysterModel(mesa.Model):
         #create reef agents
         ac = mg.AgentCreator(
             Reef, 
-            model = self,
-            agent_kwargs = {
-                "sanctuary_status" : random.random() < (num_safe_reefs/100)
-                }
+            model = self
             )
         self.reef_agents = ac.from_file(
             self.reefs, unique_id = self.unique_id
@@ -61,10 +58,7 @@ class OysterModel(mesa.Model):
                 unique_id = "oyster_" + str(i),
                 model = self,
                 geometry = point_in_reef(random_reef),
-                crs =  self.space.crs,
-                birth_reef = random_reef,
-                home_reef = random_reef,
-                age = random.randint(1, 3649)
+                crs =  self.space.crs
             )
             
             #add oyster agents to grid and scheduler
@@ -80,15 +74,7 @@ class OysterModel(mesa.Model):
         
         #tell data collector what to collect
         self.datacollector = mesa.DataCollector(
-            agent_reporters = {"type" : "type",
-                                #oyster metrics
-                                "energy": lambda a: a.energy if a.type == "Oyster" else None,
-                                "fertility": lambda a: a.fertility if a.type == "Oyster" else None,
-                                "shell_length_mm": lambda a: a.shell_length_mm if a.type == "Oyster" else None,
-                                "dry_biomass": lambda a: a.dry_biomass if a.type == "Oyster" else None,
-                                "wet_biomass": lambda a: a.wet_biomass if a.type == "Oyster" else None,
-                                "mortality_prob": lambda a: a.mortality_prob if a.type == "Oyster" else None,
-                                #reef metrics
+            agent_reporters = {#reef metrics
                                 "oyster_count": lambda a: a.oyster_count if a.type == "Reef" else None
                                 },
             #get oyster lifespan                    
