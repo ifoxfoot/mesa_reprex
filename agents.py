@@ -22,7 +22,7 @@ class Shell(mg.GeoAgent):
 #set up class for oyster agent
 class Oyster(mg.GeoAgent):
     
-    """An oyster with assigned age, energy, and size."""
+    """Oyster Agent"""
    
     #define init values
     def __init__(self, unique_id, model, geometry, crs):
