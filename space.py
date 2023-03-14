@@ -29,7 +29,7 @@ class SeaBed(mg.GeoSpace):
             )
         raster_layer.crs = crs
         raster_layer.apply_raster(
-            data = np.zeros(shape = (1, raster_layer.height, raster_layer.width)),
+            data = np.ones(shape = (1, raster_layer.height, raster_layer.width)),
             attr_name = "elevation",
         )
         super().add_layer(raster_layer)

@@ -45,19 +45,12 @@ class OysterModel(mesa.Model):
             random_reef =  self.random.randint(
                 0, len(self.reef_agents) - 1
             )
-            #create while loop to return point in reef
-            def point_in_reef (random_reef):
-                    minx, miny, maxx, maxy = self.reef_agents[random_reef].geometry.bounds
-                    pnt = Point(0,0)
-                    while not self.reef_agents[random_reef].geometry.contains(pnt):
-                        pnt = Point(random.uniform(minx, maxx), random.uniform(miny, maxy))
-                    return Point(self.space.raster_layer.transform * (pnt.x, pnt.y))
         
             #create agent
             this_oyster = Oyster(
                 unique_id = "oyster_" + str(i),
                 model = self,
-                geometry = point_in_reef(random_reef),
+                geometry = self.point_in_reef(random_reef),
                 crs =  self.space.crs
             )
             
@@ -81,6 +74,14 @@ class OysterModel(mesa.Model):
             tables = {"Lifespan": [lambda a: a.unique_id if a.type == "Oyster" else None, 
             lambda a: a.age if a.type == "Oyster" else None]}
             )
+        
+    #create function to create coordinates for new oyster
+    def point_in_reef (self, random_reef):
+        minx, miny, maxx, maxy = self.reef_agents[random_reef].geometry.bounds
+        pnt = Point(0,0)
+        while not self.reef_agents[random_reef].geometry.contains(pnt):
+            pnt = Point(random.uniform(minx, maxx), random.uniform(miny, maxy))
+        return pnt
 
     #define step
     def step(self):
@@ -89,7 +90,7 @@ class OysterModel(mesa.Model):
         self.step_count += 1
         self.space._recreate_rtree()  # Recalculate spatial tree, because agents are moving??
         self.datacollector.collect(self)
-
+    
     #define run model function
     def run_model(self, step_count=200):
          for i in range(step_count):
