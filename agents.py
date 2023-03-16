@@ -36,7 +36,7 @@ class Oyster(mg.GeoAgent):
         self.status = "alive"
         
         #if conditions met, kill off
-        if (random.random() > 0.002):
+        if (random.random() < 0.002):
             self.status = "dead"
             self.model.space.remove_agent(self)
             self.model.schedule.remove(self)

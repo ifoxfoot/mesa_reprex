@@ -55,7 +55,7 @@ class OysterModel(mesa.Model):
             )
             
             #add oyster agents to grid and scheduler
-            self.space.add_agents(this_oyster)
+            self.space.add_oyster(this_oyster)
             self.schedule.add(this_oyster)
 
         #add reef agents to schedule after oysters
