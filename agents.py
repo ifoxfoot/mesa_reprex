@@ -40,10 +40,11 @@ class Oyster(mg.GeoAgent):
             self.status = "dead"
             self.model.space.remove_agent(self)
             self.model.schedule.remove(self)
+            
 
             #convert dead oysters to shells
             new_shell = Shell(
-                unique_id = "shell_" + str(self.unique_id),
+                unique_id = "shell_" + str(self.unique_id).replace("oyster_", ""),
                 model = self.model,
                 geometry = self.geometry, 
                 crs = self.model.space.crs,
@@ -75,6 +76,7 @@ class Oyster(mg.GeoAgent):
                 )
             
                 #add oyster agents to grid and scheduler
+                self.model.space.add_oyster(baby_oyster)
                 self.model.space.add_agents(baby_oyster)
                 self.model.schedule.add(baby_oyster)
 

@@ -46,7 +46,7 @@ class SeaBed(mg.GeoSpace):
         row, col = rio.transform.rowcol(
             self.raster_layer.transform, 
             oyster.geometry.x, oyster.geometry.y)
-        x = row
-        y = col - self.raster_layer.height -1
-        self.raster_layer.cells[x][y].oy_in_cell += 1
+        x = col
+        y = row - self.raster_layer.height -1
+        self.raster_layer.cells[x][-y].oy_in_cell += 1
     
