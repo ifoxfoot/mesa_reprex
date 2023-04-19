@@ -14,8 +14,8 @@ class ReefCell(mg.Cell):
         indices: mesa.space.Coordinate | None = None,
     ):
         super().__init__(pos, indices)
-        self.elevation = None
-        self.oy_in_cell = None
+        self.og_elevation = None
+        self.new_elevation = None
 
     def step(self):
         pass
@@ -28,25 +28,17 @@ class SeaBed(mg.GeoSpace):
         raster_layer = mg.RasterLayer.from_file(
             "data/oyster_dem.tif", 
             cell_cls = ReefCell, 
-            attr_name = "elevation"
+            attr_name = "og_elevation"
             )
         raster_layer.crs = crs
         raster_layer.apply_raster(
             data = np.ones(shape = (1, raster_layer.height, raster_layer.width)),
-            attr_name = "oy_in_cell",
+            attr_name = "new_elevation",
         )
         super().add_layer(raster_layer)
 
     @property
     def raster_layer(self):
         return self.layers[0]
-    
-       #when an oyster is added, add it to raster layer
-    def add_oyster(self, oyster):
-        row, col = rio.transform.rowcol(
-            self.raster_layer.transform, 
-            oyster.geometry.x, oyster.geometry.y)
-        x = col
-        y = row - self.raster_layer.height -1
-        self.raster_layer.cells[x][-y].oy_in_cell += 1
+
     

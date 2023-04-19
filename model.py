@@ -25,8 +25,6 @@ class OysterModel(mesa.Model):
         self.step_count = 0
         self.current_id = N
 
-        self.space.set_elevation_layer(crs = "epsg:3512")
-
         #create reef agents
         ac = mg.AgentCreator(
             Reef, 
@@ -55,7 +53,6 @@ class OysterModel(mesa.Model):
             )
             
             #add oyster agents to grid and scheduler
-            self.space.add_oyster(this_oyster)
             self.space.add_agents(this_oyster)
             self.schedule.add(this_oyster)
 
@@ -65,16 +62,6 @@ class OysterModel(mesa.Model):
 
         #init data collector
         self.running = True
-        
-        #tell data collector what to collect
-        self.datacollector = mesa.DataCollector(
-            agent_reporters = {#reef metrics
-                                "oyster_count": lambda a: a.oyster_count if a.type == "Reef" else None
-                                },
-            #get oyster lifespan                    
-            tables = {"Lifespan": [lambda a: a.unique_id if a.type == "Oyster" else None, 
-            lambda a: a.age if a.type == "Oyster" else None]}
-            )
         
     #create function to create coordinates for new oyster
     def point_in_reef (self, random_reef):
@@ -90,7 +77,7 @@ class OysterModel(mesa.Model):
         self.schedule.step()
         self.step_count += 1
         self.space._recreate_rtree()  # Recalculate spatial tree, because agents are moving??
-        self.datacollector.collect(self)
+
     
     #define run model function
     def run_model(self, step_count=200):

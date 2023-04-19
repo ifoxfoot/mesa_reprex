@@ -12,9 +12,10 @@ class Shell(mg.GeoAgent):
 
     """Shell Agent"""
 
-    def __init__(self, unique_id, model, geometry, crs):
+    def __init__(self, unique_id, model, geometry, crs, weight):
         super().__init__(unique_id, model, geometry, crs)
         self.type = "Shell"
+        self.weight = weight
         
     def step(self):
         pass
@@ -28,6 +29,7 @@ class Oyster(mg.GeoAgent):
     def __init__(self, unique_id, model, geometry, crs):
          super().__init__(unique_id, model, geometry, crs)
          self.type = "Oyster"
+         self.weight = random.randint(1, 300)
 
     #define what happens at each step      
     def step(self):
@@ -48,6 +50,7 @@ class Oyster(mg.GeoAgent):
                 model = self.model,
                 geometry = self.geometry, 
                 crs = self.model.space.crs,
+                weight = self.weight
                 )
 
             #add shell agents to grid and scheduler
@@ -95,6 +98,12 @@ class Reef(mg.GeoAgent):
     def step(self):
         #get step count
         self.oyster_count = len(list(self.model.space.get_intersecting_agents(self)))
+        #get total shell weight?
+
+        if self.model.step_count%365 == 0:
+            #get shell weight 
+            self.shell_weight = sum(self.model.space.get_intersecting_agents(self).shell_weight)
+
 
     #get reef identity
     def __repr__(self):
