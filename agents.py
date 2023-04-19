@@ -79,7 +79,6 @@ class Oyster(mg.GeoAgent):
                 )
             
                 #add oyster agents to grid and scheduler
-                self.model.space.add_oyster(baby_oyster)
                 self.model.space.add_agents(baby_oyster)
                 self.model.schedule.add(baby_oyster)
 
@@ -94,15 +93,17 @@ class Reef(mg.GeoAgent):
     ):
         super().__init__(unique_id, model, geometry, crs)
         self.type = "Reef"
+        self.total_shell_weight = None
 
     def step(self):
         #get step count
         self.oyster_count = len(list(self.model.space.get_intersecting_agents(self)))
         #get total shell weight?
 
-        if self.model.step_count%365 == 0:
+        if self.model.step_count%4 == 0:
             #get shell weight 
-            self.shell_weight = sum(self.model.space.get_intersecting_agents(self).shell_weight)
+            self.total_shell_weight = [a.weight for a in self.model.space.get_intersecting_agents(self) if isinstance(a, Oyster)]
+            print(str(self.unique_id) + "_" + str(sum(self.total_shell_weight)))
 
 
     #get reef identity

@@ -20,14 +20,14 @@ def agent_portrayal(agent):
             }
         elif isinstance(agent, Oyster):
             return {
-                "color": "Green",
+                "Color": "Green",
             }
         elif isinstance(agent, Shell):
             return {
-                "color": "Gray",
+                "Color": "Gray",
             }
     elif isinstance(agent, ReefCell):
-        return (agent.oy_in_cell, agent.oy_in_cell, agent.oy_in_cell, 1)
+        return (agent.og_elevation, agent.og_elevation, agent.og_elevation, 1)
 
 #create map element
 map_element = mg.visualization.MapModule(agent_portrayal)
